@@ -6,9 +6,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:views="clr-namespace:AppUserData.View.Pages" 
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid>
+    <Page.Resources>
+        
+        <!--DataTemplate x:Key="test" x:DataType="{x:Markup views:UsersPage}">
+            <views:UsersPage/>
+        </DataTemplate-->
+    </Page.Resources>
+    <ContentControl x:Name="Pages" Content="UsersPage"/>
 
-    </Grid>
+    <!--Page.Resources>
+        <DataTemplate x:DataType="{x:Type views:UsersPage}">
+            <views:FiguresPage/>
+        </DataTemplate>
+        
+    </>
+    
+    <ContentControl x:Name="Pages" Content="UsersPage"/-->
+
+    
 </Page>
