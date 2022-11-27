@@ -11,25 +11,28 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <!--Style TargetType="Button" x:Key="ButtonAddUserTemplate" >
+        <Style TargetType="Button" x:Key="ButtonAddUserTemplate" >
             <Setter Property="Template" >
                 <Setter.Value>
                     <ControlTemplate>
-                        <Border BorderBrush="LightBlue" BorderThickness="8" CornerRadius="8"  >
-                            <StackPanel Orientation="Horizontal" Background="AliceBlue"  
-                                    Height="28" Padding="3" >
-
-                                <SymbolIcon Symbol="AddFriend" VerticalAlignment="Center" ></SymbolIcon>
-                                <ContentPresenter VerticalAlignment="Center" />
+                        <Border BorderBrush="Blue" BorderThickness="1" CornerRadius="8"  >
+                            <StackPanel Orientation="Horizontal" Background="LightBlue"  
+                                    Height="40" Padding="5" Width="100">
+                                <SymbolIcon Symbol="AddFriend" VerticalAlignment="Center" Margin="10 0 10 0"></SymbolIcon>
+                                <ContentPresenter 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center" 
+                                    FontSize="20"/>
                             </StackPanel>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style-->
+        </Style>
     </Page.Resources>
     
-    <Grid Background="ForestGreen" Margin="20">
+    
+    <Grid Background="LightGreen" Margin="20">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
@@ -45,30 +48,86 @@
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding FormAddUserLabel}" FontSize="28" Foreground="Black"
+        <TextBlock Grid.Column="0" Grid.Row="0" 
+                   Text="{Binding FormAddUserLabel}" 
+                   FontSize="28" Foreground="Black"
                    Height="40" Margin="10" Width="220"/>
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding FirstNameLabel}" FontSize="20" Foreground="Blue"
+        <TextBlock Grid.Column="0" Grid.Row="1" 
+                   Text="{Binding FirstNameLabel}" 
+                   FontSize="20" Foreground="Blue"
                    Height="30" Margin="10 10 5 10" Width="220"/>
-        <TextBox x:Name="FirstName" Grid.Column="0" Grid.Row="2" FontSize="20" Foreground="Black"
-                 Height="30" Margin="5 10 10 10" Width="220" Text="{Binding FirstName}"/>
+        <TextBox x:Name="FirstName" Grid.Column="0" Grid.Row="2" FontSize="16" 
+                 Foreground="Black" Background="IndianRed"
+                 Height="30" Margin="5 10 10 10" Width="220" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding SecoundNameLabel}" FontSize="20" Foreground="Blue"
                    Height="30" Margin="10 10 5 10" Width="220"/>
-        <TextBox x:Name="SecoundName" Grid.Column="0" Grid.Row="4" FontSize="20"
-                 Height="30" Margin="5 10 10 10" Width="220" Text="{Binding LastName}"/>
+        <TextBox x:Name="SecoundName" Grid.Column="0" Grid.Row="4" FontSize="16"
+                 Height="50" Margin="5 10 10 10" Width="220" Text="{Binding LastName, Mode=TwoWay}"/>
         <Button Grid.Column="0" Grid.Row="10" 
-                FontSize="20" 
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Width="100" Height="40" Background="Red"
-                Template="{StaticResource ButtonAddUserTemplate}" >
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                Command="{Binding AddUserCommand}"
+                Style="{StaticResource ButtonAddUserTemplate}">
             <Button.Content>
                 Add
             </Button.Content>
         </Button>
-        <ContentControl Background="Azure" Grid.Column="2" Grid.RowSpan="6"
-                        Height="300" Width="300" HorizontalAlignment="Center"/>
-        <ListView ItemsSource="{Binding DataContext.Users}" 
-                  HorizontalAlignment="Center" VerticalAlignment="Center"
-                  Grid.Column="2" Grid.RowSpan="6"/>
+     
+        <TextBlock Grid.Column="2" 
+                   Grid.Row="0" 
+                   Text="Users:" 
+                   FontSize="28" 
+                   Foreground="Black"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Center"
+                   Height="40" 
+                   Margin="10" 
+                   Width="220"/>
+        <ListView ItemsSource="{Binding Users}" 
+                  Background="BlueViolet"
+                  HorizontalAlignment="Left" 
+                  VerticalAlignment="Center"
+                  Grid.Column="2" 
+                  Grid.Row="1"
+                  Grid.RowSpan="5">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding FirstName}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!--ListView Grid.Column="2" 
+                  Grid.Row="3"
+                  Grid.RowSpan="6"
+                  VerticalAlignment="Top"
+                  x:Name="UsersListView" 
+                  ItemsSource="{x:Bind Path=viewmodel.Users}" 
+                  SelectionMode="None" IsItemClickEnabled="False" 
+                  HorizontalAlignment="Right">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="vm:ListItemData">
+                    <Grid VerticalAlignment="Center">
+                        <AppBarButton Label="{x:Bind ListItemText}">
+                            <AppBarButton.Icon>
+                                <SymbolIcon Symbol="{x:Bind ListItemIcon}"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView-->
+
+        <!--ListView ItemsSource="{x:Bind Users}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:User">
+                    <TextBlock Text="{x:Bind Name}"/>
+                    <TextBlock Text="{x:Bind Name}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView-->
 
 
     </Grid>

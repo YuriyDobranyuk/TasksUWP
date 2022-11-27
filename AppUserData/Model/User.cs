@@ -19,12 +19,12 @@ namespace AppUserData.Model
         }
         public void Edit(string name, string lastName)
         {
-            FirstName = FirstName;
-            SecoundName = SecoundName;
+            FirstName = name;
+            SecoundName = lastName;
         }
         public User()
         {
-
+            Id = Guid.NewGuid();
         }
     }
 }
