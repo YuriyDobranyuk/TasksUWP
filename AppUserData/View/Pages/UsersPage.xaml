@@ -18,7 +18,28 @@
                         <Border BorderBrush="Blue" BorderThickness="1" CornerRadius="8"  >
                             <StackPanel Orientation="Horizontal" Background="LightBlue"  
                                     Height="40" Padding="5" Width="100">
-                                <SymbolIcon Symbol="AddFriend" VerticalAlignment="Center" Margin="10 0 10 0"></SymbolIcon>
+                                <SymbolIcon Symbol="AddFriend" 
+                                            VerticalAlignment="Center" 
+                                            Margin="10 0 10 0"/>
+                                <ContentPresenter 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center" 
+                                    FontSize="20"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="ButtonEditDeleteUserTemplate" >
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border BorderBrush="Red" BorderThickness="1" CornerRadius="8"  >
+                            <StackPanel Orientation="Horizontal" Background="LightBlue"  
+                                        Height="auto"  
+                                        Padding="5" 
+                                        Width="auto">
                                 <ContentPresenter 
                                     HorizontalAlignment="Center" 
                                     VerticalAlignment="Center" 
@@ -46,6 +67,7 @@
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" 
@@ -58,21 +80,61 @@
                    Height="30" Margin="10 10 5 10" Width="220"/>
         <TextBox x:Name="FirstName" Grid.Column="0" Grid.Row="2" FontSize="16" 
                  Foreground="Black" Background="IndianRed"
-                 Height="30" Margin="5 10 10 10" Width="220" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Height="30" Margin="5 10 10 10" Width="220" 
+                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding SecoundNameLabel}" FontSize="20" Foreground="Blue"
                    Height="30" Margin="10 10 5 10" Width="220"/>
         <TextBox x:Name="SecoundName" Grid.Column="0" Grid.Row="4" FontSize="16"
-                 Height="50" Margin="5 10 10 10" Width="220" Text="{Binding LastName, Mode=TwoWay}"/>
-        <Button Grid.Column="0" Grid.Row="10" 
+                 Height="30" Margin="5 10 10 10" Width="220" 
+                 Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Column="0" Grid.Row="5" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Command="{Binding AddUserCommand}"
                 Style="{StaticResource ButtonAddUserTemplate}">
+            Add
+        </Button>
+        <Button Grid.Column="0" Grid.Row="6" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center" 
+                Command="{Binding DeleteUserCommand}" 
+                CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
+                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                Margin="10 5">
             <Button.Content>
-                Add
+                <SymbolIcon Symbol="Delete" 
+                            VerticalAlignment="Center" 
+                            Margin="10 0 10 0"/>
             </Button.Content>
         </Button>
-     
+        <Button Grid.Column="0" Grid.Row="6" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                Command="{Binding EditUserCommand}" 
+                CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
+                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                Margin="10 5">
+            <Button.Content>
+                <SymbolIcon Symbol="Edit" 
+                            VerticalAlignment="Center" 
+                            Margin="10 0 10 0"/>
+            </Button.Content>
+        </Button>
+        <Button Grid.Column="0" Grid.Row="6" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center" 
+                Command="{Binding CanEditUserCommand}" 
+                CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
+                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                Margin="10 5">
+            <Button.Content>
+                <SymbolIcon Symbol="Save" 
+                            VerticalAlignment="Center" 
+                            Margin="10 0 10 0"/>
+            </Button.Content>
+        </Button>
+
+
         <TextBlock Grid.Column="2" 
                    Grid.Row="0" 
                    Text="Users:" 
@@ -83,150 +145,59 @@
                    Height="40" 
                    Margin="10" 
                    Width="220"/>
-        <ListView ItemsSource="{Binding Users}" 
+
+        <ListView ItemsSource="{Binding Users}" x:Name="usersList"
                   Background="BlueViolet"
                   HorizontalAlignment="Left" 
-                  VerticalAlignment="Center"
+                  VerticalAlignment="Top"
                   Grid.Column="2" 
                   Grid.Row="1"
-                  Grid.RowSpan="5">
+                  Grid.RowSpan="5"
+                  Padding="5 10">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding FirstName}"/>
+                    <StackPanel Orientation="Horizontal" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Stretch">
+                        <TextBox Text="{Binding FirstName}" 
+                                   VerticalAlignment="Center" 
+                                   Margin="0 5 10 5"
+                                   Width="100"/>
+                        <TextBlock Text="{Binding SecoundName}" 
+                                   VerticalAlignment="Center" 
+                                   Margin="0 5 10 5"
+                                   Width="100"/>
+
+                        <!--Button Command="{Binding ElementName=thisPage, 
+                            Path=DataContext.EditUserCommand}" 
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                                Margin="10 5">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Edit" 
+                                    VerticalAlignment="Center" 
+                                    Margin="10 0 10 0"/>
+                            </Button.Content>
+                        </Button>
+
+                        <Button Command="{Binding ElementName=thisPage, 
+                            Path=DataContext.DeleteUserCommand}" 
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                                Margin="10 5">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Delete" 
+                                    VerticalAlignment="Center" 
+                                    Margin="10 0 10 0"/>
+                            </Button.Content>
+                        </Button-->
+                    </StackPanel>
                 </DataTemplate>
+
             </ListView.ItemTemplate>
         </ListView>
-
-        <!--ListView Grid.Column="2" 
-                  Grid.Row="3"
-                  Grid.RowSpan="6"
-                  VerticalAlignment="Top"
-                  x:Name="UsersListView" 
-                  ItemsSource="{x:Bind Path=viewmodel.Users}" 
-                  SelectionMode="None" IsItemClickEnabled="False" 
-                  HorizontalAlignment="Right">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="vm:ListItemData">
-                    <Grid VerticalAlignment="Center">
-                        <AppBarButton Label="{x:Bind ListItemText}">
-                            <AppBarButton.Icon>
-                                <SymbolIcon Symbol="{x:Bind ListItemIcon}"/>
-                            </AppBarButton.Icon>
-                        </AppBarButton>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView-->
-
-        <!--ListView ItemsSource="{x:Bind Users}"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:User">
-                    <TextBlock Text="{x:Bind Name}"/>
-                    <TextBlock Text="{x:Bind Name}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView-->
-
 
     </Grid>
     
     
-    
-    <!--Grid Background="{Binding ColorBackgroundTheme}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-
-        <StackPanel DataContext="{Binding DetailCryptocurrency}" Margin="10" Background="{Binding ColorBackgroundTheme}">
-            <TextBlock Text="Data crypto currency:" Foreground="DarkOrange" Width="300" HorizontalAlignment="Center"/>
-            <TextBlock Text="{Binding Id}"  Width="300" Foreground="DarkOrange" />
-            <TextBlock Text="{Binding Name}" Foreground="DarkOrange" Width="300" />
-            <TextBlock Text="{Binding Price}" Foreground="DarkOrange" Width="300" />
-            <TextBlock Text="{Binding Changes24h}" Foreground="DarkOrange" Width="300" />
-            <TextBlock Text="{Binding Volume24h}" Foreground="DarkOrange" Width="300" />
-            <TextBlock Text="{Binding MarketCap}" Foreground="DarkOrange" Width="300" />
-        </StackPanel>
-
-        <DataGrid Grid.Row="1" IsReadOnly="True" Height="Auto" AutoGenerateColumns="False" ItemsSource="{Binding DetailCryptocurrency.MarketsCryptocurrency}" Background="{Binding ColorBackgroundTheme}" Foreground="{Binding ColorForegroundTheme}" Margin="10">
-            <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGrid}">
-                    <Setter Property="Background" Value="Green"/>
-                </Style>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Background" Value="LightSteelBlue"/>
-                </Style>
-                <Style TargetType="{x:Type DataGridRowHeader}">
-                    <Setter Property="Background" Value="Yellow"/>
-                </Style>
-                <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="Background" Value="Orange"/>
-                </Style>
-            </DataGrid.Resources>
-            <DataGrid.Columns>
-                <DataGridTextColumn MinWidth="100" Width="1*" Header="ExchangeId" Binding="{Binding ExchangeId}" />
-                <DataGridTextColumn MinWidth="100" Width="1*" Header="BaseId" Binding="{Binding BaseId}" />
-                <DataGridTextColumn MinWidth="100" Width="1*" Header="QuoteId" Binding="{Binding QuoteId}" />
-                <DataGridTextColumn MinWidth="100" Width="1*" Header="Volume, Usd24Hr" Binding="{Binding VolumeUsd24Hr}" />
-                <DataGridTextColumn MinWidth="100" Width="1*" Header="Price, Usd" Binding="{Binding PriceUsd}" />
-                <DataGridTextColumn MinWidth="100" Width="1*" Header="Volume, Percent" Binding="{Binding VolumePercent}" />
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid-->
-
-    <!--DockPanel x:Name="mainBlock" Background="{Binding ColorBackgroundTheme}">
-        <Menu DockPanel.Dock="Top" Background="{Binding ColorBackgroundTheme}" Foreground="{Binding ColorForegroundTheme}">
-            <MenuItem Header="Color theme" Background="{Binding ColorBackgroundTheme}" Foreground="{Binding ColorForegroundTheme}">
-                <MenuItem Header="Dark" Command="{Binding MenuItemThemeClickCommand}" CommandParameter="true" Background="{Binding ColorBackgroundTheme}" Foreground="{Binding ColorForegroundTheme}"></MenuItem>
-                <MenuItem Header="Light"  Command="{Binding MenuItemThemeClickCommand}" CommandParameter="false" Background="{Binding ColorBackgroundTheme}" Foreground="{Binding ColorForegroundTheme}"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="Currency Page" Command="{Binding NavigateCryptocurrencyPageCommand}" Background="{Binding ColorBackgroundTheme}" Foreground="{Binding ColorForegroundTheme}">
-            </MenuItem>
-        </Menu>
-
-        <Grid Background="{Binding ColorBackgroundTheme}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <StackPanel DataContext="{Binding DetailCryptocurrency}" Margin="10" Background="{Binding ColorBackgroundTheme}">
-                <TextBlock Text="Data crypto currency:" Foreground="DarkOrange" Width="300" HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding Id}"  Width="300" Foreground="DarkOrange" />
-                <TextBlock Text="{Binding Name}" Foreground="DarkOrange" Width="300" />
-                <TextBlock Text="{Binding Price}" Foreground="DarkOrange" Width="300" />
-                <TextBlock Text="{Binding Changes24h}" Foreground="DarkOrange" Width="300" />
-                <TextBlock Text="{Binding Volume24h}" Foreground="DarkOrange" Width="300" />
-                <TextBlock Text="{Binding MarketCap}" Foreground="DarkOrange" Width="300" />
-            </StackPanel>
-
-            <DataGrid Grid.Row="1" IsReadOnly="True" Height="Auto" AutoGenerateColumns="False" ItemsSource="{Binding DetailCryptocurrency.MarketsCryptocurrency}" Background="{Binding ColorBackgroundTheme}" Foreground="{Binding ColorForegroundTheme}" Margin="10">
-                <DataGrid.Resources>
-                    <Style TargetType="{x:Type DataGrid}">
-                        <Setter Property="Background" Value="Green"/>
-                    </Style>
-                    <Style TargetType="{x:Type DataGridRow}">
-                        <Setter Property="Background" Value="LightSteelBlue"/>
-                    </Style>
-                    <Style TargetType="{x:Type DataGridRowHeader}">
-                        <Setter Property="Background" Value="Yellow"/>
-                    </Style>
-                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                        <Setter Property="Background" Value="Orange"/>
-                    </Style>
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTextColumn MinWidth="100" Width="1*" Header="ExchangeId" Binding="{Binding ExchangeId}" />
-                    <DataGridTextColumn MinWidth="100" Width="1*" Header="BaseId" Binding="{Binding BaseId}" />
-                    <DataGridTextColumn MinWidth="100" Width="1*" Header="QuoteId" Binding="{Binding QuoteId}" />
-                    <DataGridTextColumn MinWidth="100" Width="1*" Header="Volume, Usd24Hr" Binding="{Binding VolumeUsd24Hr}" />
-                    <DataGridTextColumn MinWidth="100" Width="1*" Header="Price, Usd" Binding="{Binding PriceUsd}" />
-                    <DataGridTextColumn MinWidth="100" Width="1*" Header="Volume, Percent" Binding="{Binding VolumePercent}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-    </DockPanel-->
-
 </Page>

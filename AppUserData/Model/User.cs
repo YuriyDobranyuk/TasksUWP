@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Windows.ApplicationModel.Activation;
 using Windows.Networking;
 
 namespace AppUserData.Model
@@ -21,6 +22,16 @@ namespace AppUserData.Model
         {
             FirstName = name;
             SecoundName = lastName;
+        }
+        public void Delete(Guid id)
+        {
+            var currentUser = Search(id);
+            //currentUser.Delete();
+        }
+        public User Search(Guid id)
+        {
+            User user = null;
+            return user;
         }
         public User()
         {

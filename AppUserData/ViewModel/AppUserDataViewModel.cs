@@ -28,6 +28,9 @@ namespace AppUserData.ViewModel
             Users = new ObservableCollection<User>();
 
             AddUserCommand = new LambdaCommand(OnAddUserCommandExecute, CanAddUserCommandExecute);
+            EditUserCommand = new LambdaCommand(OnEditUserCommandExecute, CanEditUserCommandExecute);
+            CanEditUserCommand = new LambdaCommand(OnCanEditUserCommandExecute, CanCanEditUserCommandExecute);
+            DeleteUserCommand = new LambdaCommand(OnDeleteUserCommandExecute, CanDeleteUserCommandExecute);
 
             for (var i=0; i <=3; i++)
             {
@@ -40,6 +43,11 @@ namespace AppUserData.ViewModel
             }
             
         }
+        private void ClearDataFieldUser()
+        {
+            /*Name = "";
+            LastName = "";*/
+        }
 
         #region Commands
         #region AddUserCommand
@@ -47,30 +55,51 @@ namespace AppUserData.ViewModel
         private bool CanAddUserCommandExecute(object p) => true;
         private void OnAddUserCommandExecute(object p)
         {
-            var user = new User
+            if (Name != null & Name != "" & LastName != null & LastName != "")
             {
-                FirstName = Name,
-                SecoundName = LastName
-            };
-            Users.Add(user);
-
-            /*var figure = p as Figure;
-            var nameFigure = figure.Name;
-
-            figure.AddTimerFigure();
-
-            figure.Move();
-
-            figure.AddFigureToManagerFigure();
-
-            Figures.Add(figure);
-            FiguresShape.Add(figure.Shape);
-
-            ResetParameters(nameFigure);*/
-
-
+                var user = new User
+                {
+                    FirstName = Name,
+                    SecoundName = LastName
+                };
+                Users.Add(user);
+                ClearDataFieldUser();
+            }
         }
         #endregion
+        #region CanEditUserCommand
+        public ICommand CanEditUserCommand { get; }
+        private bool CanCanEditUserCommandExecute(object p) => true;
+        private void OnCanEditUserCommandExecute(object p)
+        {
+            var user = p as User;
+            user.Edit(Name, LastName);
+            ClearDataFieldUser();
+        }
+        #endregion
+        #region EditUserCommand
+        public ICommand EditUserCommand { get; }
+        private bool CanEditUserCommandExecute(object p) => true;
+        private void OnEditUserCommandExecute(object p)
+        {
+            if (p != null)
+            {
+                var user = p as User;
+                Name = user.FirstName;
+                LastName = user.SecoundName;
+            }
+        }
+        #endregion
+        #region DeleteUserCommand
+        public ICommand DeleteUserCommand { get; }
+        private bool CanDeleteUserCommandExecute(object p) => true;
+        private void OnDeleteUserCommandExecute(object p)
+        {
+            var user = p as User;
+            Users.Remove(user);
+        }
+        #endregion
+
         #endregion
     }
 }
