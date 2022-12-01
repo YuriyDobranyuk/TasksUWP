@@ -94,7 +94,7 @@
                 Style="{StaticResource ButtonAddUserTemplate}">
             Add
         </Button>
-        <Button Grid.Column="0" Grid.Row="6" 
+        <Button Grid.Column="2" Grid.Row="6" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Center" 
                 Command="{Binding DeleteUserCommand}" 
@@ -107,20 +107,20 @@
                             Margin="10 0 10 0"/>
             </Button.Content>
         </Button>
-        <Button Grid.Column="0" Grid.Row="6" 
-                HorizontalAlignment="Center" 
+        <Button Grid.Column="2" Grid.Row="6" 
+                HorizontalAlignment="left" 
                 VerticalAlignment="Center" 
                 Command="{Binding EditUserCommand}" 
                 CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
                 Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                Margin="10 5">
+                Margin="80 5 10 5">
             <Button.Content>
                 <SymbolIcon Symbol="Edit" 
                             VerticalAlignment="Center" 
                             Margin="10 0 10 0"/>
             </Button.Content>
         </Button>
-        <Button Grid.Column="0" Grid.Row="6" 
+        <!--Button Grid.Column="2" Grid.Row="6" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Center" 
                 Command="{Binding CanEditUserCommand}" 
@@ -132,7 +132,7 @@
                             VerticalAlignment="Center" 
                             Margin="10 0 10 0"/>
             </Button.Content>
-        </Button>
+        </Button-->
 
 
         <TextBlock Grid.Column="2" 
@@ -146,7 +146,7 @@
                    Margin="10" 
                    Width="220"/>
 
-        <ListView ItemsSource="{Binding Users}" x:Name="usersList"
+        <ListView ItemsSource="{Binding Users, Mode=OneWay}" x:Name="usersList"
                   Background="BlueViolet"
                   HorizontalAlignment="Left" 
                   VerticalAlignment="Top"
@@ -159,14 +159,16 @@
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Stretch">
-                        <TextBox Text="{Binding FirstName}" 
+                        <TextBlock Text="{Binding FirstName}" 
                                    VerticalAlignment="Center" 
                                    Margin="0 5 10 5"
-                                   Width="100"/>
+                                   MaxWidth="250"
+                                   MinWidth="100"/>
                         <TextBlock Text="{Binding SecoundName}" 
                                    VerticalAlignment="Center" 
                                    Margin="0 5 10 5"
-                                   Width="100"/>
+                                   MaxWidth="250"
+                                   MinWidth="100"/>
 
                         <!--Button Command="{Binding ElementName=thisPage, 
                             Path=DataContext.EditUserCommand}" 

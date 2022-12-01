@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Windows.ApplicationModel.Activation;
-using Windows.Networking;
 
 namespace AppUserData.Model
 {
@@ -14,28 +7,29 @@ namespace AppUserData.Model
         public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string SecoundName { get; set; }
-        public void Add(string name, string lastName) {
-            FirstName = name;
-            SecoundName = lastName;
-        }
+        public bool IsCanDelete { get; set; }
         public void Edit(string name, string lastName)
         {
             FirstName = name;
             SecoundName = lastName;
         }
-        public void Delete(Guid id)
+        public void MarkToDelete()
         {
-            var currentUser = Search(id);
-            //currentUser.Delete();
+            IsCanDelete = true;
         }
-        public User Search(Guid id)
+        public void UnMarkToDelete()
+        {
+            IsCanDelete = false;
+        }
+        /*public User Search(Guid id)
         {
             User user = null;
             return user;
-        }
+        }*/
         public User()
         {
             Id = Guid.NewGuid();
+            IsCanDelete = false;
         }
     }
 }
