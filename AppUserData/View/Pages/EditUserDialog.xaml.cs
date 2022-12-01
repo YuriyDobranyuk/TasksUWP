@@ -1,21 +1,4 @@
-﻿using AppUserData.Model;
-using AppUserData.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Networking;
-using Windows.System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+﻿using Windows.UI.Xaml.Controls;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,8 +13,8 @@ namespace AppUserData.View.Pages
             SelectUser = user;
             this.InitializeComponent();
             FirstName.Text = user.FirstName;
-            SecoundName.Text = user.SecoundName;
-            DataContext = new EditUserDataViewModel();
+            SecoundName.Text = user.LastName;
+            //DataContext = new EditUserDataViewModel();
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -42,7 +25,7 @@ namespace AppUserData.View.Pages
             if (name != "" && lastName != "")
             {
                 user.FirstName = name;
-                user.SecoundName = lastName;
+                user.LastName = lastName;
             }
         }
 

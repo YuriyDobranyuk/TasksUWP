@@ -7,9 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     
-    xmlns:viewmodel="using:AppUserData.ViewModel" 
-    d:DataContext="{d:DesignInstance Type=viewmodel:EditUserDataViewModel}"
-   
     Title="{Binding TitleFormEdit}"
     PrimaryButtonText="Save"
     SecondaryButtonText="Close"

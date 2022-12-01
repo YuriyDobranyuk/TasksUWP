@@ -123,12 +123,12 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Commands\Base\Command.cs" />
     <Compile Include="Services\LambdaCommand.cs" />
     <Compile Include="ViewModel\AppUserDataViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\EditUserDataViewModel.cs" />
     <Compile Include="View\Pages\DeleteUserDialog.xaml.cs">
       <DependentUpon>DeleteUserDialog.xaml</DependentUpon>
     </Compile>

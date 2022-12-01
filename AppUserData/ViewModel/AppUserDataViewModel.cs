@@ -2,14 +2,9 @@
 using AppUserData.Services;
 using AppUserData.View.Pages;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows.Input;
-using Windows.System;
 using Windows.UI.Xaml.Controls;
 
 namespace AppUserData.ViewModel
@@ -17,39 +12,42 @@ namespace AppUserData.ViewModel
     public class AppUserDataViewModel : BaseViewModel
     {
         public ObservableCollection<Model.User> Users { get; set; }
-        public string Name { get; set; }
+        public UserManager UserManager { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string FormAddUserLabel { get; }
-        public string FirstNameLabel { get; }
-        public string SecoundNameLabel { get; }
+        public string FormUserLabel { get; set; }
+        public string FirstNameLabel { get; set; }
+        public string LastNameLabel { get; set; }
 
         public AppUserDataViewModel()
         {
-            FormAddUserLabel = "Add user:";
-            FirstNameLabel = "Enter name:";
-            SecoundNameLabel = "Enter last name:";
+            FormUserLabel = "Add user:";
+            FirstNameLabel = "Enter firstname:";
+            LastNameLabel = "Enter lastname:";
             Users = new ObservableCollection<Model.User>();
+
+            UserManager = new UserManager();
+            Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
 
             AddUserCommand = new LambdaCommand(OnAddUserCommandExecute, CanAddUserCommandExecute);
             EditUserCommand = new LambdaCommand(OnEditUserCommandExecute, CanEditUserCommandExecute);
-            CanEditUserCommand = new LambdaCommand(OnCanEditUserCommandExecute, CanCanEditUserCommandExecute);
+            SaveUserCommand = new LambdaCommand(OnSaveUserCommandExecute, CanSaveUserCommandExecute);
             DeleteUserCommand = new LambdaCommand(OnDeleteUserCommandExecute, CanDeleteUserCommandExecute);
-
-            for (var i = 0; i <= 3; i++)
-            {
-                var user = new Model.User()
-                {
-                    FirstName = "User " + i.ToString(),
-                    SecoundName = "LastName " + i.ToString(),
-                };
-                Users.Add(user);
-            }
 
         }
         private void ClearDataFieldUser()
         {
-            /*Name = "";
-            LastName = "";*/
+            FirstName = String.Empty;
+            OnPropertyChanged(nameof(FirstName));
+            LastName = String.Empty; ;
+            OnPropertyChanged(nameof(LastName));
+        }
+        private void IncludeUserDataInForm(Model.User user)
+        {
+            FirstName = user.FirstName;
+            OnPropertyChanged(nameof(FirstName));
+            LastName = user.LastName;
+            OnPropertyChanged(nameof(LastName));
         }
 
         #region Commands
@@ -58,28 +56,20 @@ namespace AppUserData.ViewModel
         private bool CanAddUserCommandExecute(object p) => true;
         private void OnAddUserCommandExecute(object p)
         {
-            if (Name != null & Name != "" & LastName != null & LastName != "")
+            try
             {
-                var user = new Model.User
-                {
-                    FirstName = Name,
-                    SecoundName = LastName
-                };
-                Users.Add(user);
+                UserManager.AddUser(new Model.User { FirstName = FirstName, LastName = LastName });
+                Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
+                OnPropertyChanged(nameof(Users));
                 ClearDataFieldUser();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
         }
         #endregion
-        #region CanEditUserCommand #not use#
-        public ICommand CanEditUserCommand { get; }
-        private bool CanCanEditUserCommandExecute(object p) => true;
-        private void OnCanEditUserCommandExecute(object p)
-        {
-            var user = p as Model.User;
-            user.Edit(Name, LastName);
-            ClearDataFieldUser();
-        }
-        #endregion
+        
         #region EditUserCommand
         public ICommand EditUserCommand { get; }
         private bool CanEditUserCommandExecute(object p) 
@@ -87,39 +77,60 @@ namespace AppUserData.ViewModel
             var user = p as Model.User;
             return user != null;
         }
-        private async void OnEditUserCommandExecute(object p)
+        private void OnEditUserCommandExecute(object p)
         {
             var user = p as Model.User;
-            EditUserDialog editUserDialog = new EditUserDialog(user);
-            await editUserDialog.ShowAsync();
+            IncludeUserDataInForm(user);
 
-            user.FirstName = "yura";
-            user.SecoundName = "det";
-            OnPropertyChanged(nameof(Users));
-
-
-            /*if (p != null)
+            FormUserLabel = "Edit user:";
+            OnPropertyChanged(nameof(FormUserLabel));
+            FirstNameLabel = "Edit name:";
+            OnPropertyChanged(nameof(FirstNameLabel));
+            LastNameLabel = "Edit last name:";
+            OnPropertyChanged(nameof(LastNameLabel));
+        }
+        #endregion
+        #region SaveUserCommand
+        public ICommand SaveUserCommand { get; }
+        private bool CanSaveUserCommandExecute(object p) => true;
+        private void OnSaveUserCommandExecute(object p)
+        {
+            try
             {
-                var user = p as User;
-                Name = user.FirstName;
-                LastName = user.SecoundName;
-            }*/
+                var user = p as Model.User;
+                user.FirstName = FirstName;
+                user.LastName = LastName;
+                UserManager.UpdateUser(p as Model.User);
+                Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
+                OnPropertyChanged(nameof(Users));
+                ClearDataFieldUser();
+                FormUserLabel = "Add user:";
+                OnPropertyChanged(nameof(FormUserLabel));
+                FirstNameLabel = "Add firstname:";
+                OnPropertyChanged(nameof(FirstNameLabel));
+                LastNameLabel = "Add lastname:";
+                OnPropertyChanged(nameof(LastNameLabel));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            
         }
         #endregion
         #region DeleteUserCommand
         public ICommand DeleteUserCommand { get; }
         private bool CanDeleteUserCommandExecute(object p)
         {
-            var user = p as Model.User;
-            return user != null;
+            return p != null;
         }
         private async void OnDeleteUserCommandExecute(object p)
         {
             var user = p as Model.User;
-            DeleteUserDialog deleteUserDialog = new DeleteUserDialog(user);
-            await deleteUserDialog.ShowAsync();
+            DeleteUserDialog deleteUserDialog = new DeleteUserDialog();
+            var result = await deleteUserDialog.ShowAsync();
 
-            if (user.IsCanDelete)
+            if (result == ContentDialogResult.Primary)
             {
                 Users.Remove(user);
             }

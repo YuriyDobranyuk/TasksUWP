@@ -7,21 +7,16 @@ namespace AppUserData.View.Pages
 {
     public sealed partial class DeleteUserDialog : ContentDialog
     {
-        private User SelectUser{get; set;}
-        public DeleteUserDialog(User user)
+        public DeleteUserDialog()
         {
-            SelectUser = user;
             this.InitializeComponent();
         }
-
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            SelectUser.MarkToDelete();
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            SelectUser.UnMarkToDelete();
         }
     }
 }
