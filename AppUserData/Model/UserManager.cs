@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Windows.Networking;
 
 namespace AppUserData.Model
 {
@@ -34,8 +35,11 @@ namespace AppUserData.Model
                 throw new System.Exception("FirstName and LastName are required.");
             }
             var user = Users.FirstOrDefault(x => x.Id == u.Id);
-            user.FirstName = u.FirstName;
-            user.LastName = u.LastName;
+            if (user != null)
+            {
+                user.FirstName = u.FirstName;
+                user.LastName = u.LastName;
+            }
         }
     }
 }

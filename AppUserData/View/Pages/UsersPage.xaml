@@ -9,15 +9,18 @@
     d:DataContext="{d:DesignInstance Type=viewmodel:AppUserDataViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
 
     <Page.Resources>
         <Style TargetType="Button" x:Key="ButtonAddUserTemplate" >
             <Setter Property="Template" >
                 <Setter.Value>
                     <ControlTemplate>
-                        <Border BorderBrush="Blue" BorderThickness="1" CornerRadius="8"  >
-                            <StackPanel Orientation="Horizontal" Background="LightBlue"  
-                                    Height="40" Padding="5" Width="100">
+                        <Border BorderBrush="{StaticResource BorderColorButtonAdd}" 
+                                BorderThickness="1" CornerRadius="8"  >
+                            <StackPanel Orientation="Horizontal"
+                                        Background="{StaticResource BackgroundButtonAdd}"  
+                                        Height="40" Padding="5" Width="100">
                                 <SymbolIcon Symbol="AddFriend" 
                                             VerticalAlignment="Center" 
                                             Margin="10 0 10 0"/>
@@ -35,8 +38,10 @@
             <Setter Property="Template" >
                 <Setter.Value>
                     <ControlTemplate>
-                        <Border BorderBrush="Red" BorderThickness="1" CornerRadius="8"  >
-                            <StackPanel Orientation="Horizontal" Background="LightBlue"  
+                        <Border BorderBrush="{StaticResource BorderColorButtonEdit}" 
+                                BorderThickness="1" CornerRadius="8"  >
+                            <StackPanel Orientation="Horizontal" 
+                                        Background="{StaticResource BackgroundButtonAdd}"  
                                         Height="auto"  
                                         Padding="5" 
                                         Width="auto">
@@ -53,12 +58,12 @@
     </Page.Resources>
     
     
-    <Grid Background="LightGreen" Margin="20">
+    <Grid Margin="20">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="550"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="580"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"></RowDefinition>
@@ -71,44 +76,34 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" 
-                   Text="{Binding FormUserLabel, Mode=OneWay}" 
-                   FontSize="28" Foreground="Black"
+                   Text="{StaticResource FormUserLabel}" 
+                   FontSize="28" Foreground="{StaticResource ForegroundNameBlock}"
                    Height="40" Margin="10" Width="220"/>
         <TextBlock Grid.Column="0" Grid.Row="1" 
-                   Text="{Binding FirstNameLabel, Mode=OneWay}" 
-                   FontSize="20" Foreground="Blue"
+                   Text="{StaticResource FirstNameLabel}" 
+                   FontSize="20" Foreground="{StaticResource ForegroundLabelForm}"
                    Height="30" Margin="10 10 5 10" Width="220"/>
         <TextBox x:Name="FirstName" Grid.Column="0" Grid.Row="2" FontSize="16" 
-                 Foreground="Black"
+                 Foreground="{StaticResource ForegroundTextBoxForm}"
                  Height="30" Margin="5 10 10 10" Width="220" 
                  Text="{Binding FirstName, Mode=TwoWay}"/>
         <TextBlock Grid.Column="0" Grid.Row="3" 
-                   Text="{Binding LastNameLabel, Mode=OneWay}" FontSize="20" 
-                   Foreground="Blue"
+                   Text="{StaticResource LastNameLabel}" FontSize="20" 
+                   Foreground="{StaticResource ForegroundLabelForm}"
                    Height="30" Margin="10 10 5 10" Width="220"/>
         <TextBox Grid.Column="0" Grid.Row="4" FontSize="16"
+                 Foreground="{StaticResource ForegroundTextBoxForm}"
                  Height="30" Margin="5 10 10 10" Width="220" 
-                 Text="{Binding LastName, Mode=TwoWay}"/>
+                 Text="{Binding LastName, Mode=TwoWay}" 
+                 />
+        
         <Button x:Name="ButtonAdd" Grid.Column="0" Grid.Row="5" 
+                Content="{StaticResource NameButtonAdd}"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Center" 
                 Command="{Binding AddUserCommand}"
-                Style="{StaticResource ButtonAddUserTemplate}">
-            Add
-        </Button>
-        <Button x:Name="ButtonSave" Grid.Column="0" Grid.Row="5" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Center" 
-                Command="{Binding SaveUserCommand}"
-                CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
-                Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                Margin="10 5 5 5">
-            <Button.Content>
-                <SymbolIcon Symbol="Save" 
-                            VerticalAlignment="Center" 
-                            Margin="10 0 10 0"/>
-            </Button.Content>
-        </Button>
+                Style="{StaticResource ButtonAddUserTemplate}"/>
+        
         <Button Grid.Column="2" Grid.Row="6" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Center" 
@@ -135,45 +130,116 @@
                             Margin="10 0 10 0"/>
             </Button.Content>
         </Button>
+        <Button x:Name="ButtonSave" Grid.Column="2" Grid.Row="6" 
+                HorizontalAlignment="left" 
+                VerticalAlignment="Center" 
+                Command="{Binding SaveUserCommand}"
+                CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
+                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                Margin="150 5 10 5">
+            <Button.Content>
+                <SymbolIcon Symbol="Save" 
+                            VerticalAlignment="Center" 
+                            Margin="10 0 10 0"/>
+            </Button.Content>
+        </Button>
        
         <TextBlock Grid.Column="2" 
                    Grid.Row="0" 
                    Text="Users:" 
                    FontSize="28" 
-                   Foreground="Black"
+                   Foreground="{StaticResource ForegroundNameBlock}"
                    HorizontalAlignment="Left" 
                    VerticalAlignment="Center"
                    Height="40" 
                    Margin="10" 
                    Width="220"/>
 
-        <ListView ItemsSource="{Binding Users, Mode=OneWay}" x:Name="usersList"
+        <ListView ItemsSource="{Binding Users, Mode=OneWay}" 
+                  x:Name="usersList"
                   HorizontalAlignment="Left" 
                   VerticalAlignment="Top"
                   Grid.Column="2" 
                   Grid.Row="1"
                   Grid.RowSpan="5"
-                  Padding="5 10"
-                  Width="400">
+                  Padding="10 5"
+                  Width="480">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Stretch">
-                        <TextBlock Text="{Binding FirstName}" 
+                        <TextBox Text="{Binding FirstName}" 
+                                 VerticalAlignment="Center" 
+                                 Margin="0 3 10 3"
+                                 Width="100"
+                                 IsReadOnly="True"/>
+                        <TextBox Text="{Binding LastName}" 
+                                 VerticalAlignment="Center" 
+                                 Margin="0 3 10 3"
+                                 Width="100"
+                                 IsReadOnly="True"/>
+                        
+                        <Button Command="{Binding ElementName=thisPage, 
+                            Path=DataContext.EditUserCommand}" 
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                                Margin="10 5">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Edit" 
+                                    VerticalAlignment="Center" 
+                                    Margin="10 0 10 0"/>
+                            </Button.Content>
+                        </Button>
+                        
+                        <Button HorizontalAlignment="Right" 
+                                VerticalAlignment="Center" 
+                                Command="{Binding SaveUserCommand}"
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                                Margin="10 5 5 5">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Save" 
+                                    VerticalAlignment="Center" 
+                                    Margin="10 0 10 0"/>    
+                            </Button.Content>
+                        </Button>
+
+                        <Button Command="{Binding ElementName=thisPage, 
+                            Path=DataContext.DeleteUserCommand}" 
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonEditDeleteUserTemplate}"
+                                Margin="10 5">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Delete" 
+                                    VerticalAlignment="Center" 
+                                    Margin="10 0 10 0"/>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Stretch"
+                                Padding="10 5">
+                        <TextBlock Text="{StaticResource FirstNameLabel}" 
                                    VerticalAlignment="Center" 
-                                   Margin="0 5 10 5"
+                                   FontWeight="Bold"
+                                   Margin="0 3 10 3"
                                    MaxWidth="250"
                                    MinWidth="100"/>
-                        <TextBlock Text="{Binding LastName}" 
+                        <TextBlock Text="{StaticResource LastNameLabel}" 
                                    VerticalAlignment="Center" 
-                                   Margin="0 5 10 5"
+                                   FontWeight="Bold"
+                                   Margin="0 3 10 3"
                                    MaxWidth="250"
                                    MinWidth="100"/>
                     </StackPanel>
                 </DataTemplate>
-
-            </ListView.ItemTemplate>
+            </ListView.HeaderTemplate>
         </ListView>
 
     </Grid>

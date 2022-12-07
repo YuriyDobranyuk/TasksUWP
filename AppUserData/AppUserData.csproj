@@ -132,8 +132,8 @@
     <Compile Include="View\Pages\DeleteUserDialog.xaml.cs">
       <DependentUpon>DeleteUserDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Pages\EditUserDialog.xaml.cs">
-      <DependentUpon>EditUserDialog.xaml</DependentUpon>
+    <Compile Include="View\Pages\MessageDialog.xaml.cs">
+      <DependentUpon>MessageDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Pages\UsersPage.xaml.cs">
       <DependentUpon>UsersPage.xaml</DependentUpon>
@@ -163,11 +163,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\NamesDictionary.en-US.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ThemeDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Pages\DeleteUserDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Pages\EditUserDialog.xaml">
+    <Page Include="View\Pages\MessageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
