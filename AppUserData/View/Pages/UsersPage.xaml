@@ -114,7 +114,7 @@
                    Margin="20 10" 
                    Width="220"/>
 
-        <ListView ItemsSource="{Binding Users, Mode=TwoWay}" 
+        <ListView ItemsSource="{Binding Users, Mode=OneWay}" 
                   x:Name="usersList"
                   Background="{StaticResource ListBoxBackgroundThemeBrush}"
                   HorizontalAlignment="Left" 
@@ -133,17 +133,17 @@
                                  VerticalAlignment="Center" 
                                  Margin="0 3 10 3"
                                  Width="140"
-                                 IsReadOnly="{Binding CanNotEdit, Mode=OneWay}"/>
+                                 IsReadOnly="{Binding UserSettings.CanNotEdit, Mode=OneWay}"/>
                         <TextBox Text="{Binding LastName, Mode=TwoWay}" 
                                  VerticalAlignment="Center" 
                                  Margin="0 3 10 3"
                                  Width="140"
-                                 IsReadOnly="{Binding CanNotEdit, Mode=OneWay}"/>
+                                 IsReadOnly="{Binding UserSettings.CanNotEdit, Mode=OneWay}"/>
                         
                         <Button Command="{Binding Path=DataContext.EditUserCommand,
                             ElementName=parentGrid}" 
                                 CommandParameter="{Binding}"
-                                Visibility="{Binding VisibilityEditButton, Mode=OneWay}"
+                                Visibility="{Binding UserSettings.VisibilityEditButton, Mode=OneWay}"
                                 Style="{StaticResource ButtonEditDeleteUserTemplate}"
                                 Margin="10 5">
                             <Button.Content>
@@ -156,7 +156,7 @@
                         <Button Command="{Binding Path=DataContext.SaveUserCommand,
                             ElementName=parentGrid}"
                                 CommandParameter="{Binding}"
-                                Visibility="{Binding VisibilitySaveButton, Mode=OneWay}"
+                                Visibility="{Binding UserSettings.VisibilitySaveButton, Mode=OneWay}"
                                 Style="{StaticResource ButtonEditDeleteUserTemplate}"
                                 Margin="10 5">
                             <Button.Content>

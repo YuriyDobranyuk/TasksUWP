@@ -44,9 +44,11 @@ namespace AppUserData.ViewModel
             try
             {
                 UserManager.AddUser(new Model.User { FirstName = FirstName,
-                    LastName = LastName, CanNotEdit = true, 
-                    VisibilityEditButton = TypeVisibility.Visible.ToString(), 
-                    VisibilitySaveButton = TypeVisibility.Collapsed.ToString()});
+                    LastName = LastName,
+                    UserSettings = new UserSettings { CanNotEdit = true, 
+                        VisibilityEditButton = TypeVisibility.Visible.ToString(), 
+                        VisibilitySaveButton = TypeVisibility.Collapsed.ToString()
+                    }});
                 Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
                 OnPropertyChanged(nameof(Users));
                 ClearDataFieldUser();

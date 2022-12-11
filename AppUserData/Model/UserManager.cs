@@ -28,9 +28,9 @@ namespace AppUserData.Model
             var user = Users.FirstOrDefault(x => x.Id == u.Id);
             if (user != null)
             {
-                user.CanNotEdit = false;
-                user.VisibilityEditButton = TypeVisibility.Collapsed.ToString();
-                user.VisibilitySaveButton = TypeVisibility.Visible.ToString();
+                user.UserSettings.CanNotEdit = false;
+                user.UserSettings.VisibilityEditButton = TypeVisibility.Collapsed.ToString();
+                user.UserSettings.VisibilitySaveButton = TypeVisibility.Visible.ToString();
             }
         }
         public void DeleteUser(User user)
@@ -49,9 +49,9 @@ namespace AppUserData.Model
             {
                 user.FirstName = u.FirstName;
                 user.LastName = u.LastName;
-                user.CanNotEdit = true;
-                user.VisibilityEditButton = TypeVisibility.Visible.ToString();
-                user.VisibilitySaveButton = TypeVisibility.Collapsed.ToString();
+                user.UserSettings.CanNotEdit = true;
+                user.UserSettings.VisibilityEditButton = TypeVisibility.Visible.ToString();
+                user.UserSettings.VisibilitySaveButton = TypeVisibility.Collapsed.ToString();
             }
         }
 
