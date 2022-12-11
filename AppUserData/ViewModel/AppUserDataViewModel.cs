@@ -1,4 +1,5 @@
-﻿using AppUserData.Model;
+﻿using AppUserData.Common.Enums;
+using AppUserData.Model;
 using AppUserData.Services;
 using AppUserData.View.Pages;
 using System;
@@ -17,8 +18,6 @@ namespace AppUserData.ViewModel
        
         public AppUserDataViewModel()
         {
-            Users = new ObservableCollection<Model.User>();
-
             UserManager = new UserManager();
             Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
 
@@ -35,14 +34,7 @@ namespace AppUserData.ViewModel
             LastName = String.Empty; ;
             OnPropertyChanged(nameof(LastName));
         }
-        private void IncludeUserDataInForm(Model.User user)
-        {
-            FirstName = user.FirstName;
-            OnPropertyChanged(nameof(FirstName));
-            LastName = user.LastName;
-            OnPropertyChanged(nameof(LastName));
-        }
-
+       
         #region Commands
         #region AddUserCommand
         public ICommand AddUserCommand { get; }
@@ -51,7 +43,10 @@ namespace AppUserData.ViewModel
         {
             try
             {
-                UserManager.AddUser(new Model.User { FirstName = FirstName, LastName = LastName });
+                UserManager.AddUser(new Model.User { FirstName = FirstName,
+                    LastName = LastName, CanNotEdit = true, 
+                    VisibilityEditButton = TypeVisibility.Visible.ToString(), 
+                    VisibilitySaveButton = TypeVisibility.Collapsed.ToString()});
                 Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
                 OnPropertyChanged(nameof(Users));
                 ClearDataFieldUser();
@@ -74,7 +69,10 @@ namespace AppUserData.ViewModel
         private void OnEditUserCommandExecute(object p)
         {
             var user = p as Model.User;
-            IncludeUserDataInForm(user);
+            //IncludeUserDataInForm(user);
+            UserManager.EditUser(user);
+            Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
+            OnPropertyChanged(nameof(Users));
         }
         #endregion
         #region SaveUserCommand
@@ -85,8 +83,6 @@ namespace AppUserData.ViewModel
             try
             {
                 var user = p as Model.User;
-                user.FirstName = FirstName;
-                user.LastName = LastName;
                 UserManager.UpdateUser(user);
                 Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
                 OnPropertyChanged(nameof(Users));

@@ -9,7 +9,6 @@
     d:DataContext="{d:DesignInstance Type=viewmodel:AppUserDataViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    
 
     <Page.Resources>
         <Style TargetType="Button" x:Key="ButtonAddUserTemplate" >
@@ -56,13 +55,12 @@
             </Setter>
         </Style>
     </Page.Resources>
-    
-    
-    <Grid Margin="20">
+
+    <Grid Margin="20" x:Name="parentGrid">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="580"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -73,6 +71,7 @@
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" 
@@ -85,65 +84,25 @@
                    Height="30" Margin="10 10 5 10" Width="220"/>
         <TextBox x:Name="FirstName" Grid.Column="0" Grid.Row="2" FontSize="16" 
                  Foreground="{StaticResource ForegroundTextBoxForm}"
-                 Height="30" Margin="5 10 10 10" Width="220" 
+                 Height="40" Margin="10 3 10 3" Width="220" 
                  Text="{Binding FirstName, Mode=TwoWay}"/>
         <TextBlock Grid.Column="0" Grid.Row="3" 
                    Text="{StaticResource LastNameLabel}" FontSize="20" 
                    Foreground="{StaticResource ForegroundLabelForm}"
-                   Height="30" Margin="10 10 5 10" Width="220"/>
+                   Height="30" Margin="10 5 5 5" Width="220"/>
         <TextBox Grid.Column="0" Grid.Row="4" FontSize="16"
                  Foreground="{StaticResource ForegroundTextBoxForm}"
-                 Height="30" Margin="5 10 10 10" Width="220" 
-                 Text="{Binding LastName, Mode=TwoWay}" 
-                 />
+                 Height="40" Margin="10 3 10 3" Width="220" 
+                 VerticalAlignment="Center" 
+                 Text="{Binding LastName, Mode=TwoWay}" />
         
         <Button x:Name="ButtonAdd" Grid.Column="0" Grid.Row="5" 
                 Content="{StaticResource NameButtonAdd}"
-                HorizontalAlignment="Left" 
+                HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Command="{Binding AddUserCommand}"
                 Style="{StaticResource ButtonAddUserTemplate}"/>
-        
-        <Button Grid.Column="2" Grid.Row="6" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-                Command="{Binding DeleteUserCommand}" 
-                CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
-                Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                Margin="10 5">
-            <Button.Content>
-                <SymbolIcon Symbol="Delete" 
-                            VerticalAlignment="Center" 
-                            Margin="10 0 10 0"/>
-            </Button.Content>
-        </Button>
-        <Button Grid.Column="2" Grid.Row="6" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-                Command="{Binding EditUserCommand}" 
-                CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
-                Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                Margin="80 5 10 5">
-            <Button.Content>
-                <SymbolIcon Symbol="Edit" 
-                            VerticalAlignment="Center" 
-                            Margin="10 0 10 0"/>
-            </Button.Content>
-        </Button>
-        <Button x:Name="ButtonSave" Grid.Column="2" Grid.Row="6" 
-                HorizontalAlignment="left" 
-                VerticalAlignment="Center" 
-                Command="{Binding SaveUserCommand}"
-                CommandParameter="{Binding ElementName=usersList, Path=SelectedItem}"
-                Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                Margin="150 5 10 5">
-            <Button.Content>
-                <SymbolIcon Symbol="Save" 
-                            VerticalAlignment="Center" 
-                            Margin="10 0 10 0"/>
-            </Button.Content>
-        </Button>
-       
+
         <TextBlock Grid.Column="2" 
                    Grid.Row="0" 
                    Text="Users:" 
@@ -152,16 +111,17 @@
                    HorizontalAlignment="Left" 
                    VerticalAlignment="Center"
                    Height="40" 
-                   Margin="10" 
+                   Margin="20 10" 
                    Width="220"/>
 
-        <ListView ItemsSource="{Binding Users, Mode=OneWay}" 
+        <ListView ItemsSource="{Binding Users, Mode=TwoWay}" 
                   x:Name="usersList"
+                  Background="{StaticResource ListBoxBackgroundThemeBrush}"
                   HorizontalAlignment="Left" 
                   VerticalAlignment="Top"
                   Grid.Column="2" 
                   Grid.Row="1"
-                  Grid.RowSpan="5"
+                  Grid.RowSpan="7"
                   Padding="10 5"
                   Width="480">
             <ListView.ItemTemplate>
@@ -169,20 +129,21 @@
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Stretch">
-                        <TextBox Text="{Binding FirstName}" 
+                        <TextBox Text="{Binding FirstName, Mode=TwoWay}" 
                                  VerticalAlignment="Center" 
                                  Margin="0 3 10 3"
-                                 Width="100"
-                                 IsReadOnly="True"/>
-                        <TextBox Text="{Binding LastName}" 
+                                 Width="140"
+                                 IsReadOnly="{Binding CanNotEdit, Mode=OneWay}"/>
+                        <TextBox Text="{Binding LastName, Mode=TwoWay}" 
                                  VerticalAlignment="Center" 
                                  Margin="0 3 10 3"
-                                 Width="100"
-                                 IsReadOnly="True"/>
+                                 Width="140"
+                                 IsReadOnly="{Binding CanNotEdit, Mode=OneWay}"/>
                         
-                        <Button Command="{Binding ElementName=thisPage, 
-                            Path=DataContext.EditUserCommand}" 
+                        <Button Command="{Binding Path=DataContext.EditUserCommand,
+                            ElementName=parentGrid}" 
                                 CommandParameter="{Binding}"
+                                Visibility="{Binding VisibilityEditButton, Mode=OneWay}"
                                 Style="{StaticResource ButtonEditDeleteUserTemplate}"
                                 Margin="10 5">
                             <Button.Content>
@@ -192,12 +153,12 @@
                             </Button.Content>
                         </Button>
                         
-                        <Button HorizontalAlignment="Right" 
-                                VerticalAlignment="Center" 
-                                Command="{Binding SaveUserCommand}"
+                        <Button Command="{Binding Path=DataContext.SaveUserCommand,
+                            ElementName=parentGrid}"
                                 CommandParameter="{Binding}"
+                                Visibility="{Binding VisibilitySaveButton, Mode=OneWay}"
                                 Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                                Margin="10 5 5 5">
+                                Margin="10 5">
                             <Button.Content>
                                 <SymbolIcon Symbol="Save" 
                                     VerticalAlignment="Center" 
@@ -205,8 +166,8 @@
                             </Button.Content>
                         </Button>
 
-                        <Button Command="{Binding ElementName=thisPage, 
-                            Path=DataContext.DeleteUserCommand}" 
+                        <Button Command="{Binding Path=DataContext.DeleteUserCommand, 
+                            ElementName=parentGrid}" 
                                 CommandParameter="{Binding}"
                                 Style="{StaticResource ButtonEditDeleteUserTemplate}"
                                 Margin="10 5">
@@ -216,6 +177,7 @@
                                     Margin="10 0 10 0"/>
                             </Button.Content>
                         </Button>
+
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -224,25 +186,22 @@
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Stretch"
-                                Padding="10 5">
+                                Padding="10 5" >
                         <TextBlock Text="{StaticResource FirstNameLabel}" 
                                    VerticalAlignment="Center" 
                                    FontWeight="Bold"
                                    Margin="0 3 10 3"
-                                   MaxWidth="250"
-                                   MinWidth="100"/>
+                                   Width="140"/>
                         <TextBlock Text="{StaticResource LastNameLabel}" 
                                    VerticalAlignment="Center" 
                                    FontWeight="Bold"
                                    Margin="0 3 10 3"
-                                   MaxWidth="250"
-                                   MinWidth="100"/>
+                                   Width="140"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.HeaderTemplate>
         </ListView>
 
     </Grid>
-    
-    
+
 </Page>

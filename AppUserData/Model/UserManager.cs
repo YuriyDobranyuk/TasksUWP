@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AppUserData.Common.Enums;
+using System.Collections.Generic;
 using System.Linq;
-using Windows.Networking;
 
 namespace AppUserData.Model
 {
@@ -23,6 +23,16 @@ namespace AppUserData.Model
             Users.Add(user);
         }
 
+        public void EditUser(User u)
+        {
+            var user = Users.FirstOrDefault(x => x.Id == u.Id);
+            if (user != null)
+            {
+                user.CanNotEdit = false;
+                user.VisibilityEditButton = TypeVisibility.Collapsed.ToString();
+                user.VisibilitySaveButton = TypeVisibility.Visible.ToString();
+            }
+        }
         public void DeleteUser(User user)
         {
             Users.Remove(user);
@@ -39,7 +49,11 @@ namespace AppUserData.Model
             {
                 user.FirstName = u.FirstName;
                 user.LastName = u.LastName;
+                user.CanNotEdit = true;
+                user.VisibilityEditButton = TypeVisibility.Visible.ToString();
+                user.VisibilitySaveButton = TypeVisibility.Collapsed.ToString();
             }
         }
+
     }
 }
