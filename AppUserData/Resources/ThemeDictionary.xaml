@@ -1,0 +1,27 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="LightGreen" />
+    <SolidColorBrush x:Key="ForegroundNameBlock" Color="Black" />
+    <SolidColorBrush x:Key="ForegroundLabelForm" Color="Black" />
+    <SolidColorBrush x:Key="ForegroundTextBoxForm" Color="Blue" />
+
+    <SolidColorBrush x:Key="BorderColorButtonAdd" Color="Blue" />
+    <SolidColorBrush x:Key="BackgroundButtonAdd" Color="LightBlue" />
+    <SolidColorBrush x:Key="BorderColorButtonEdit" Color="Red" />
+    
+
+    <!--SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="MediumVioletRed" /-->
+
+    <!--ResourceDictionary x:Key="Default">
+        <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="Orange" />
+        <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="Orange" />
+    </ResourceDictionary>
+    <ResourceDictionary x:Key="Dark">
+        <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="Green" />
+    </ResourceDictionary>
+    <ResourceDictionary x:Key="Light">
+        <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="Blue" />
+    </ResourceDictionary-->
+</ResourceDictionary>
