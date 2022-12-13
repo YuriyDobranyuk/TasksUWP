@@ -111,7 +111,9 @@ namespace AppUserData.ViewModel
 
             if (result == ContentDialogResult.Primary)
             {
-                Users.Remove(user);
+                UserManager.DeleteUser(user);
+                Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
+                OnPropertyChanged(nameof(Users));
             }
         }
         #endregion
