@@ -19,7 +19,7 @@
                                 BorderThickness="1" CornerRadius="8"  >
                             <StackPanel Orientation="Horizontal"
                                         Background="{StaticResource BackgroundButtonAdd}"  
-                                        Height="40" Padding="5" Width="100">
+                                        Height="40" Padding="5" Width="auto">
                                 <SymbolIcon Symbol="AddFriend" 
                                             VerticalAlignment="Center" 
                                             Margin="10 0 10 0"/>
@@ -55,6 +55,15 @@
             </Setter>
         </Style>
     </Page.Resources>
+    
+    <Page.TopAppBar>
+        <CommandBar x:Name="commandBar" HorizontalAlignment="Left" OverflowButtonVisibility="Collapsed">
+            <AppBarButton x:Uid="LangLabelEn" Command="{Binding ChangeLangCommand}"
+                CommandParameter="en-US"/>
+            <AppBarButton x:Uid="LangLabelUa" Command="{Binding ChangeLangCommand}"
+                CommandParameter="uk-UA"/>
+        </CommandBar>
+    </Page.TopAppBar>
 
     <Grid Margin="20" x:Name="parentGrid">
 
@@ -74,39 +83,39 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" 
-                   Text="{StaticResource FormUserLabel}" 
-                   FontSize="28" Foreground="{StaticResource ForegroundNameBlock}"
-                   Height="40" Margin="10" Width="220"/>
-        <TextBlock Grid.Column="0" Grid.Row="1" 
-                   Text="{StaticResource FirstNameLabel}" 
+        <TextBlock x:Uid="FormUserLabel" 
+                   Grid.Column="0" Grid.Row="0" 
+                   FontSize="24" Foreground="{StaticResource ForegroundNameBlock}"
+                   Height="40" Margin="10" Width="auto"/>
+        <TextBlock x:Uid="FirstNameLabel"
+                   Grid.Column="0" Grid.Row="1" 
                    FontSize="20" Foreground="{StaticResource ForegroundLabelForm}"
                    Height="30" Margin="10 10 5 10" Width="220"/>
-        <TextBox x:Name="FirstName" Grid.Column="0" Grid.Row="2" FontSize="16" 
+        <TextBox x:Uid="FirstName"
+                 Grid.Column="0" Grid.Row="2" FontSize="16" 
                  Foreground="{StaticResource ForegroundTextBoxForm}"
                  Height="40" Margin="10 3 10 3" Width="220" 
                  Text="{Binding FirstName, Mode=TwoWay}"/>
-        <TextBlock Grid.Column="0" Grid.Row="3" 
-                   Text="{StaticResource LastNameLabel}" FontSize="20" 
-                   Foreground="{StaticResource ForegroundLabelForm}"
+        <TextBlock x:Uid="LastNameLabel" 
+                   Grid.Column="0" Grid.Row="3" 
+                   FontSize="20" Foreground="{StaticResource ForegroundLabelForm}"
                    Height="30" Margin="10 5 5 5" Width="220"/>
-        <TextBox Grid.Column="0" Grid.Row="4" FontSize="16"
-                 Foreground="{StaticResource ForegroundTextBoxForm}"
+        <TextBox x:Uid="LastName" Grid.Row="4"
+                 FontSize="16" Foreground="{StaticResource ForegroundTextBoxForm}"
                  Height="40" Margin="10 3 10 3" Width="220" 
                  VerticalAlignment="Center" 
                  Text="{Binding LastName, Mode=TwoWay}" />
-        
-        <Button x:Name="ButtonAdd" Grid.Column="0" Grid.Row="5" 
-                Content="{StaticResource NameButtonAdd}"
+
+        <Button x:Uid="ButtonAdd" 
+                Grid.Column="0" Grid.Row="5" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Command="{Binding AddUserCommand}"
                 Style="{StaticResource ButtonAddUserTemplate}"/>
 
-        <TextBlock Grid.Column="2" 
-                   Grid.Row="0" 
-                   Text="Users:" 
-                   FontSize="28" 
+        <TextBlock x:Uid="NameUserList"
+                   Grid.Column="2" Grid.Row="0" 
+                   FontSize="24" 
                    Foreground="{StaticResource ForegroundNameBlock}"
                    HorizontalAlignment="Left" 
                    VerticalAlignment="Center"
@@ -115,7 +124,6 @@
                    Width="220"/>
 
         <ListView ItemsSource="{Binding Users, Mode=OneWay}" 
-                  x:Name="usersList"
                   Background="{StaticResource ListBoxBackgroundThemeBrush}"
                   HorizontalAlignment="Left" 
                   VerticalAlignment="Top"
@@ -129,16 +137,27 @@
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Stretch">
+                        <TextBlock Text="{Binding FirstName, Mode=TwoWay}" 
+                                   Foreground="{StaticResource ForegroundNameBlock}"
+                                   Visibility="{Binding UserSettings.VisibilityEditButton, Mode=OneWay}"
+                                   VerticalAlignment="Center"
+                                   Margin="0 3 10 3" 
+                                   Width="140"/>    
                         <TextBox Text="{Binding FirstName, Mode=TwoWay}" 
+                                 Visibility="{Binding UserSettings.VisibilitySaveButton, Mode=OneWay}"
                                  VerticalAlignment="Center" 
                                  Margin="0 3 10 3"
-                                 Width="140"
-                                 IsReadOnly="{Binding UserSettings.CanNotEdit, Mode=OneWay}"/>
+                                 Width="140"/>
+                        <TextBlock Text="{Binding LastName, Mode=TwoWay}"
+                                   Visibility="{Binding UserSettings.VisibilityEditButton, Mode=OneWay}"
+                                   VerticalAlignment="Center"
+                                   Margin="0 3 10 3" 
+                                   Width="140"/>
                         <TextBox Text="{Binding LastName, Mode=TwoWay}" 
+                                 Visibility="{Binding UserSettings.VisibilitySaveButton, Mode=OneWay}"
                                  VerticalAlignment="Center" 
                                  Margin="0 3 10 3"
-                                 Width="140"
-                                 IsReadOnly="{Binding UserSettings.CanNotEdit, Mode=OneWay}"/>
+                                 Width="140"/>
                         
                         <Button Command="{Binding Path=DataContext.EditUserCommand,
                             ElementName=parentGrid}" 
@@ -187,12 +206,12 @@
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Stretch"
                                 Padding="10 5" >
-                        <TextBlock Text="{StaticResource FirstNameLabel}" 
+                        <TextBlock x:Uid="FirstNameLabel"
                                    VerticalAlignment="Center" 
                                    FontWeight="Bold"
                                    Margin="0 3 10 3"
                                    Width="140"/>
-                        <TextBlock Text="{StaticResource LastNameLabel}" 
+                        <TextBlock x:Uid="LastNameLabel"  
                                    VerticalAlignment="Center" 
                                    FontWeight="Bold"
                                    Margin="0 3 10 3"
