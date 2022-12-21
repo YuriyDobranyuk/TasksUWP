@@ -3,36 +3,74 @@ using AppUserData.Model;
 using AppUserData.Services;
 using AppUserData.View.Pages;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Windows.Globalization;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace AppUserData.ViewModel
 {
     public class AppUserDataViewModel : BaseViewModel
     {
-        public ObservableCollection<Model.User> Users { get; set; }
+        ObservableCollection<Model.User> _users;
+        public ObservableCollection<Model.User> Users {
+            get { return _users; }
+
+            set
+            {
+                if (value != _users)
+                {
+                    _users = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public UserManager UserManager { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-       
+        string _firstName;
+        public string FirstName {
+            get { return _firstName; }
+            set
+            {
+                if (value != _firstName)
+                {
+                    _firstName = value;
+                    OnPropertyChanged();
+                }
+            } 
+        }
+        string _lastName;
+        public string LastName 
+        {
+            get { return _lastName; }
+            set
+            {
+                if (value != _lastName)
+                {
+                    _lastName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
         public AppUserDataViewModel()
         {
             UserManager = new UserManager();
             Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
-
+            
             AddUserCommand = new LambdaCommand(OnAddUserCommandExecute, CanAddUserCommandExecute);
             EditUserCommand = new LambdaCommand(OnEditUserCommandExecute, CanEditUserCommandExecute);
             SaveUserCommand = new LambdaCommand(OnSaveUserCommandExecute, CanSaveUserCommandExecute);
-            DeleteUserCommand = new LambdaCommand(OnDeleteUserCommandExecute, CanDeleteUserCommandExecute);
-
+            DeleteUserCommand = new LambdaCommand(OnDeleteUserCommandExecute, 
+                CanDeleteUserCommandExecute);
+            ChangeLangCommand = new LambdaCommand(OnChangeLangCommandExecute,
+                CanChangeLangCommandExecute);
         }
         private void ClearDataFieldUser()
         {
             FirstName = String.Empty;
-            OnPropertyChanged(nameof(FirstName));
-            LastName = String.Empty; ;
-            OnPropertyChanged(nameof(LastName));
+            LastName = String.Empty;
         }
        
         #region Commands
@@ -50,7 +88,6 @@ namespace AppUserData.ViewModel
                         VisibilitySaveButton = TypeVisibility.Collapsed.ToString()
                     }});
                 Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
-                OnPropertyChanged(nameof(Users));
                 ClearDataFieldUser();
             }
             catch (Exception ex)
@@ -71,10 +108,8 @@ namespace AppUserData.ViewModel
         private void OnEditUserCommandExecute(object p)
         {
             var user = p as Model.User;
-            //IncludeUserDataInForm(user);
             UserManager.EditUser(user);
             Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
-            OnPropertyChanged(nameof(Users));
         }
         #endregion
         #region SaveUserCommand
@@ -87,8 +122,6 @@ namespace AppUserData.ViewModel
                 var user = p as Model.User;
                 UserManager.UpdateUser(user);
                 Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
-                OnPropertyChanged(nameof(Users));
-                ClearDataFieldUser();
             }
             catch (Exception ex)
             {
@@ -111,9 +144,32 @@ namespace AppUserData.ViewModel
 
             if (result == ContentDialogResult.Primary)
             {
-                Users.Remove(user);
+                UserManager.DeleteUser(user);
+                Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
             }
         }
+        #endregion
+        #region ChangeLangCommand
+        public ICommand ChangeLangCommand { get; }
+        private bool CanChangeLangCommandExecute(object p) => true;
+        private async void OnChangeLangCommandExecute(object p)
+        { 
+			try
+			{
+				var lang = p as string;
+				ApplicationLanguages.PrimaryLanguageOverride = lang;
+				var rootFrame = Window.Current.Content as Frame;
+				rootFrame.CacheSize = 0;
+				Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
+				Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
+				rootFrame.Navigate(typeof(MainPage));
+			}
+			catch (Exception ex)
+			{
+				MessageDialog messageDialog = new MessageDialog(ex.Message);
+				await messageDialog.ShowAsync();      
+			}
+		}
         #endregion
 
         #endregion
