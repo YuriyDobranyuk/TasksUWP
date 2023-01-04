@@ -1,0 +1,36 @@
+﻿<Page
+    x:Class="AppDataManager.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AppDataManager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.TopAppBar>
+        <CommandBar x:Name="commandBar" HorizontalAlignment="Left" OverflowButtonVisibility="Collapsed">
+            <AppBarButton x:Uid="LangLabelEn" Command="{Binding ChangeLangCommand}"
+                CommandParameter="en-US"/>
+            <AppBarButton x:Uid="LangLabelUa" Command="{Binding ChangeLangCommand}"
+                CommandParameter="uk-UA"/>
+        </CommandBar>
+    </Page.TopAppBar>
+    
+    <!--ContentControl Content="AuthorizationPage"/-->
+
+    <!--Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel>
+            <TextBox Name="Input_Box"></TextBox>
+            <Button Click="AddData">Add</Button>
+            <ListView Name="Output">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+    </Grid-->
+    
+</Page>
