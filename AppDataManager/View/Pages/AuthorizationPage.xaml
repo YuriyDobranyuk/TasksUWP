@@ -94,6 +94,14 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <SymbolIcon Symbol="ReportHacked"
+            Foreground="Red"
+            Visibility="{Binding HasErrors, Mode=OneWay}">
+            <ToolTipService.ToolTip>
+                <TextBlock Text="{Binding Errors, Mode=OneWay}"
+                    Foreground="Red" />
+            </ToolTipService.ToolTip>
+        </SymbolIcon>
         <TextBlock x:Uid="AuthorizationForm" 
                    Grid.Column="0" Grid.Row="0" 
                    FontSize="24" Foreground="{StaticResource ForegroundNameBlock}"
@@ -102,6 +110,9 @@
                    Grid.Column="0" Grid.Row="1" 
                    FontSize="20" Foreground="{StaticResource ForegroundLabelForm}"
                    Height="30" Margin="10 10 5 10" Width="220"/>
+
+        
+
         <TextBox x:Uid="Email"
                  Grid.Column="0" Grid.Row="2" FontSize="16" 
                  Foreground="{StaticResource ForegroundTextBoxForm}"

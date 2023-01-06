@@ -1,4 +1,5 @@
 ﻿using AppDataManager.Model;
+using AppDataManager.View.Pages;
 using AppUserData.View.Pages;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -13,6 +14,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Windows.Networking;
+using Windows.Security.Credentials;
+using Windows.UI.Xaml.Controls;
 
 namespace AppDataManager.ViewModel
 {
@@ -21,10 +24,9 @@ namespace AppDataManager.ViewModel
         private string email;
         private string masterPassword;
         [Required]
-        [MinLength(2)]
+        [MinLength(4)]
         [MaxLength(100)]
         [EmailAddress]
-        [CustomValidation(typeof(AuthorizationViewModel), nameof(ValidateEmail))]
         public string Email {
             get => email;
             set => SetProperty(ref email, value, true);
@@ -48,25 +50,80 @@ namespace AppDataManager.ViewModel
             AuthorizeUserCommand = 
                 new RelayCommand(OnAuthorizeUserCommandExecute, CanAuthorizeUserCommandExecute);
             ChangePageAuthRegCommand = 
-                new RelayCommand<object>((par) => OnChangePageAuthRegCommandExecute(par), 
+                new RelayCommand<object>((p) => OnChangePageAuthRegCommandExecute(p), 
                 (p)=> CanChangePageAuthRegCommandExecute(p));
         }
 
-        public static ValidationResult ValidateEmail(string name, ValidationContext context)
-        {
-            AuthorizationViewModel instance = (AuthorizationViewModel)context.ObjectInstance;
-            //bool isValid = instance.service.Validate(name);
-            bool isValid = true;
-            var errors = instance.GetErrors(name);
+        private string resourceName = "My App";
+        private string defaultUserName = "test@rest.com";
 
-            if (isValid)
+        private async void Login()
+        {
+            var loginCredential = GetCredentialFromLocker();
+
+            if (loginCredential != null)
             {
-                return ValidationResult.Success;
+                loginCredential.RetrievePassword();
+                if (loginCredential.Password.Equals(MasterPassword))
+                {
+                    MessageDialog messageDialog = new MessageDialog("The user is authorize in the app.");
+                    await messageDialog.ShowAsync();
+
+                    //Frame.Navigate(typeof(MainPage));
+                }
+                else
+                {
+                    MessageDialog messageDialog = new MessageDialog("Your password isn`t correct.");
+                    await messageDialog.ShowAsync();
+                }
+            }
+            else
+            {
+                MessageDialog messageDialog = new MessageDialog("This user isn`t registrated in this app.");
+                await messageDialog.ShowAsync();
+                //loginCredential = GetLoginCredentialUI();
             }
 
-            ValidationResult validationResult = new ValidationResult("The name was not validated by the fancy service");
-            return validationResult;
+            
+            //AppLogin(loginCredential.UserName, loginCredential.Password);
         }
+
+
+        private Windows.Security.Credentials.PasswordCredential GetCredentialFromLocker()
+        {
+            Windows.Security.Credentials.PasswordCredential credential = null;
+
+            var vault = new Windows.Security.Credentials.PasswordVault();
+
+            IReadOnlyList<PasswordCredential> credentialList = null;
+
+            try
+            {
+                credentialList = vault.FindAllByResource(resourceName);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+            if (credentialList.Count > 0)
+            {
+                var credentialUser = credentialList.Where(x => x.UserName == Email).FirstOrDefault();
+                if (credentialUser != null)
+                {
+                    credential = vault.Retrieve(resourceName, defaultUserName);
+                }
+                else
+                {
+                    credential = credentialUser;
+                }
+            }
+
+            return credential;
+        }
+
+
+
 
         #region Commands
         #region AuthorizeUserCommand
@@ -77,6 +134,14 @@ namespace AppDataManager.ViewModel
             try
             {
                 var ps = this.MasterPassword;
+
+                /*var vault = new Windows.Security.Credentials.PasswordVault();
+                vault.Add(new Windows.Security.Credentials.PasswordCredential(
+                    "My App", Email, MasterPassword));*/
+
+                Login();
+
+
                 /*UserManager.AddUser(new Model.User
                 {
                     FirstName = FirstName,
@@ -130,6 +195,9 @@ namespace AppDataManager.ViewModel
         #endregion
 
         #endregion
+
+
+
 
     }
 }
