@@ -13,13 +13,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Windows.ApplicationModel.Activation;
+using Windows.Devices.Enumeration;
 using Windows.Networking;
 using Windows.Security.Credentials;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace AppDataManager.ViewModel
 {
-    public class AuthorizationViewModel : ObservableValidator
+    public class AuthorizationViewModel : BaseViewModel
     {
         private string email;
         private string masterPassword;
@@ -49,13 +52,8 @@ namespace AppDataManager.ViewModel
 
             AuthorizeUserCommand = 
                 new RelayCommand(OnAuthorizeUserCommandExecute, CanAuthorizeUserCommandExecute);
-            ChangePageAuthRegCommand = 
-                new RelayCommand<object>((p) => OnChangePageAuthRegCommandExecute(p), 
-                (p)=> CanChangePageAuthRegCommandExecute(p));
+            
         }
-
-        private string resourceName = "My App";
-        private string defaultUserName = "test@rest.com";
 
         private async void Login()
         {
@@ -89,11 +87,11 @@ namespace AppDataManager.ViewModel
         }
 
 
-        private Windows.Security.Credentials.PasswordCredential GetCredentialFromLocker()
+        private PasswordCredential GetCredentialFromLocker()
         {
-            Windows.Security.Credentials.PasswordCredential credential = null;
+            PasswordCredential credential = null;
 
-            var vault = new Windows.Security.Credentials.PasswordVault();
+            var vault = new PasswordVault();
 
             IReadOnlyList<PasswordCredential> credentialList = null;
 
@@ -103,27 +101,16 @@ namespace AppDataManager.ViewModel
             }
             catch (Exception)
             {
-                return null;
+                return credential;
             }
 
             if (credentialList.Count > 0)
             {
-                var credentialUser = credentialList.Where(x => x.UserName == Email).FirstOrDefault();
-                if (credentialUser != null)
-                {
-                    credential = vault.Retrieve(resourceName, defaultUserName);
-                }
-                else
-                {
-                    credential = credentialUser;
-                }
+                credential = credentialList.Where(x => x.UserName == Email).FirstOrDefault();
             }
 
             return credential;
         }
-
-
-
 
         #region Commands
         #region AuthorizeUserCommand
@@ -142,36 +129,6 @@ namespace AppDataManager.ViewModel
                 Login();
 
 
-                /*UserManager.AddUser(new Model.User
-                {
-                    FirstName = FirstName,
-                    LastName = LastName,
-                    UserSettings = new UserSettings
-                    {
-                        CanNotEdit = true,
-                        VisibilityEditButton = TypeVisibility.Visible.ToString(),
-                        VisibilitySaveButton = TypeVisibility.Collapsed.ToString()
-                    }
-                });
-                Users = new ObservableCollection<Model.User>(UserManager.GetUsers());
-                ClearDataFieldUser();*/
-            }
-            catch (Exception ex)
-            {
-                MessageDialog messageDialog = new MessageDialog(ex.Message);
-                await messageDialog.ShowAsync();
-            }
-        }
-        #endregion
-
-        #region ChangePageAuthRegCommand
-        public ICommand ChangePageAuthRegCommand { get; }
-        private bool CanChangePageAuthRegCommandExecute(object p) => true;
-        private async void OnChangePageAuthRegCommandExecute(object p)
-        {
-            var obj = this;
-            try
-            {
                 /*UserManager.AddUser(new Model.User
                 {
                     FirstName = FirstName,

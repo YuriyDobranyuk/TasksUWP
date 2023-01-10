@@ -75,7 +75,16 @@
             </Setter>
         </Style>
     </Page.Resources>
-    
+
+    <Page.TopAppBar>
+        <CommandBar x:Name="commandBar" HorizontalAlignment="Left" OverflowButtonVisibility="Collapsed">
+            <AppBarButton x:Uid="LangLabelEn" Command="{Binding ChangeLangCommand}"
+                CommandParameter="en-US"/>
+            <AppBarButton x:Uid="LangLabelUa" Command="{Binding ChangeLangCommand}"
+                CommandParameter="uk-UA"/>
+        </CommandBar>
+    </Page.TopAppBar>
+
     <Grid Margin="20" x:Name="parentGrid">
 
         <Grid.ColumnDefinitions>
@@ -105,13 +114,11 @@
         <TextBlock x:Uid="AuthorizationForm" 
                    Grid.Column="0" Grid.Row="0" 
                    FontSize="24" Foreground="{StaticResource ForegroundNameBlock}"
-                   Height="40" Margin="10" Width="auto"/>
+                   Height="40" Margin="10" Width="220"/>
         <TextBlock x:Uid="EmailLabel"
                    Grid.Column="0" Grid.Row="1" 
                    FontSize="20" Foreground="{StaticResource ForegroundLabelForm}"
                    Height="30" Margin="10 10 5 10" Width="220"/>
-
-        
 
         <TextBox x:Uid="Email"
                  Grid.Column="0" Grid.Row="2" FontSize="16" 
@@ -140,7 +147,7 @@
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Command="{Binding ChangePageAuthRegCommand}"
-                CommandParameter="registration"/>
+                CommandParameter="RegistrationPage"/>
         
         <StackPanel Orientation="Horizontal" 
                     VerticalAlignment="Center" 

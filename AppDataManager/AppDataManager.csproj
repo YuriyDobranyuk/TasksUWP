@@ -128,6 +128,8 @@
     <Compile Include="Service\DataAccess.cs" />
     <Compile Include="ViewModel\AppDataManagerViewModel.cs" />
     <Compile Include="ViewModel\AuthorizationViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\RegistrationViewModel.cs" />
     <Compile Include="View\Pages\AuthorizationPage.xaml.cs">
       <DependentUpon>AuthorizationPage.xaml</DependentUpon>
     </Compile>

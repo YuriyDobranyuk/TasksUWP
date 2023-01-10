@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppDataManager.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace AppDataManager.View.Pages
         public RegistrationPage()
         {
             this.InitializeComponent();
+            DataContext = new RegistrationViewModel();
         }
     }
 }

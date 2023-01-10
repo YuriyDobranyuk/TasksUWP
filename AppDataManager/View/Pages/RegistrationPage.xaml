@@ -8,7 +8,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-
     <Page.Resources>
         <Style TargetType="Button" x:Key="ButtonAddUserTemplate" >
             <Setter Property="Template" >
@@ -77,6 +76,15 @@
         </Style>
     </Page.Resources>
 
+    <Page.TopAppBar>
+        <CommandBar x:Name="commandBar" HorizontalAlignment="Left" OverflowButtonVisibility="Collapsed">
+            <AppBarButton x:Uid="LangLabelEn" Command="{Binding ChangeLangCommand}"
+                CommandParameter="en-US"/>
+            <AppBarButton x:Uid="LangLabelUa" Command="{Binding ChangeLangCommand}"
+                CommandParameter="uk-UA"/>
+        </CommandBar>
+    </Page.TopAppBar>
+
     <Grid Margin="20" x:Name="parentGrid">
 
         <Grid.ColumnDefinitions>
@@ -92,146 +100,74 @@
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Uid="AuthorizationForm" 
+        <SymbolIcon Symbol="ReportHacked"
+            Foreground="Red"
+            Visibility="{Binding HasErrors, Mode=OneWay}">
+            <ToolTipService.ToolTip>
+                <TextBlock Text="{Binding Errors, Mode=OneWay}"
+                    Foreground="Red" />
+            </ToolTipService.ToolTip>
+        </SymbolIcon>
+        <TextBlock x:Uid="RegistrationForm" 
                    Grid.Column="0" Grid.Row="0" 
                    FontSize="24" Foreground="{StaticResource ForegroundNameBlock}"
-                   Height="40" Margin="10" Width="auto"/>
+                   Height="40" Margin="10" Width="220"/>
         <TextBlock x:Uid="EmailLabel"
                    Grid.Column="0" Grid.Row="1" 
                    FontSize="20" Foreground="{StaticResource ForegroundLabelForm}"
                    Height="30" Margin="10 10 5 10" Width="220"/>
+
         <TextBox x:Uid="Email"
                  Grid.Column="0" Grid.Row="2" FontSize="16" 
                  Foreground="{StaticResource ForegroundTextBoxForm}"
                  Height="40" Margin="10 3 10 3" Width="220" 
-                 Text="{Binding Email, Mode=TwoWay}"/>
+                 Text="{Binding Email, Mode=OneWay}"/>
         <TextBlock x:Uid="PasswordLabel" 
                    Grid.Column="0" Grid.Row="3" 
                    FontSize="20" Foreground="{StaticResource ForegroundLabelForm}"
                    Height="30" Margin="10 5 5 5" Width="220"/>
-        <TextBox x:Uid="Password" Grid.Row="4"
+        <PasswordBox x:Uid="Password" Grid.Row="4"
                  FontSize="16" Foreground="{StaticResource ForegroundTextBoxForm}"
                  Height="40" Margin="10 3 10 3" Width="220" 
                  VerticalAlignment="Center" 
-                 Text="{Binding Password, Mode=OneWay}" />
-
-        <Button x:Uid="ButtonAuthorize" 
-                Grid.Column="0" Grid.Row="5" 
+                 HighContrastAdjustment="Auto"
+                 Password="{Binding MasterPassword, Mode=OneWay}" />
+        <TextBlock x:Uid="ConfirmPasswordLabel" 
+                   Grid.Column="0" Grid.Row="5" 
+                   FontSize="20" Foreground="{StaticResource ForegroundLabelForm}"
+                   Height="30" Margin="10 5 5 5" Width="220"/>
+        <PasswordBox x:Uid="ConfirmPassword" Grid.Row="6"
+                 FontSize="16" Foreground="{StaticResource ForegroundTextBoxForm}"
+                 Height="40" Margin="10 3 10 3" Width="220" 
+                 VerticalAlignment="Center" 
+                 HighContrastAdjustment="Auto"
+                 Password="{Binding ConfirmMasterPassword, Mode=OneWay}" />
+        <Button x:Uid="ButtonRegistration" 
+                Grid.Column="0" Grid.Row="7" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
-                Command="{Binding AddUserCommand}"
+                Command="{Binding RegistrationUserCommand}"
                 Style="{StaticResource ButtonLoginUserTemplate}"/>
+        <Button x:Uid="PageAuthorizeLink" 
+                Grid.Column="0" Grid.Row="9" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                Command="{Binding ChangePageAuthRegCommand}"
+                CommandParameter="AuthorizationPage"/>
 
-        <TextBlock x:Uid="NameUserList"
-                   Grid.Column="2" Grid.Row="0" 
-                   FontSize="24" 
-                   Foreground="{StaticResource ForegroundNameBlock}"
-                   HorizontalAlignment="Left" 
-                   VerticalAlignment="Center"
-                   Height="40" 
-                   Margin="20 10" 
-                   Width="220"/>
-
-        <ListView ItemsSource="{Binding Users, Mode=OneWay}" 
-                  Background="{StaticResource ListBoxBackgroundThemeBrush}"
-                  HorizontalAlignment="Left" 
-                  VerticalAlignment="Top"
-                  Grid.Column="2" 
-                  Grid.Row="1"
-                  Grid.RowSpan="7"
-                  Padding="10 5"
-                  Width="480">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" 
-                                VerticalAlignment="Center" 
-                                HorizontalAlignment="Stretch">
-                        <TextBlock Text="{Binding FirstName, Mode=TwoWay}" 
-                                   Foreground="{StaticResource ForegroundNameBlock}"
-                                   Visibility="{Binding UserSettings.VisibilityEditButton, Mode=OneWay}"
-                                   VerticalAlignment="Center"
-                                   Margin="0 3 10 3" 
-                                   Width="140"/>
-                        <TextBox Text="{Binding FirstName, Mode=TwoWay}" 
-                                 Visibility="{Binding UserSettings.VisibilitySaveButton, Mode=OneWay}"
-                                 VerticalAlignment="Center" 
-                                 Margin="0 3 10 3"
-                                 Width="140"/>
-                        <TextBlock Text="{Binding LastName, Mode=TwoWay}"
-                                   Visibility="{Binding UserSettings.VisibilityEditButton, Mode=OneWay}"
-                                   VerticalAlignment="Center"
-                                   Margin="0 3 10 3" 
-                                   Width="140"/>
-                        <TextBox Text="{Binding LastName, Mode=TwoWay}" 
-                                 Visibility="{Binding UserSettings.VisibilitySaveButton, Mode=OneWay}"
-                                 VerticalAlignment="Center" 
-                                 Margin="0 3 10 3"
-                                 Width="140"/>
-
-                        <Button Command="{Binding Path=DataContext.EditUserCommand,
-                            ElementName=parentGrid}" 
-                                CommandParameter="{Binding}"
-                                Visibility="{Binding UserSettings.VisibilityEditButton, Mode=OneWay}"
-                                Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                                Margin="10 5">
-                            <Button.Content>
-                                <SymbolIcon Symbol="Edit" 
-                                    VerticalAlignment="Center" 
-                                    Margin="10 0 10 0"/>
-                            </Button.Content>
-                        </Button>
-
-                        <Button Command="{Binding Path=DataContext.SaveUserCommand,
-                            ElementName=parentGrid}"
-                                CommandParameter="{Binding}"
-                                Visibility="{Binding UserSettings.VisibilitySaveButton, Mode=OneWay}"
-                                Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                                Margin="10 5">
-                            <Button.Content>
-                                <SymbolIcon Symbol="Save" 
-                                    VerticalAlignment="Center" 
-                                    Margin="10 0 10 0"/>
-                            </Button.Content>
-                        </Button>
-
-                        <Button Command="{Binding Path=DataContext.DeleteUserCommand, 
-                            ElementName=parentGrid}" 
-                                CommandParameter="{Binding}"
-                                Style="{StaticResource ButtonEditDeleteUserTemplate}"
-                                Margin="10 5">
-                            <Button.Content>
-                                <SymbolIcon Symbol="Delete" 
-                                    VerticalAlignment="Center" 
-                                    Margin="10 0 10 0"/>
-                            </Button.Content>
-                        </Button>
-
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.HeaderTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" 
-                                VerticalAlignment="Center" 
-                                HorizontalAlignment="Stretch"
-                                Padding="10 5" >
-                        <TextBlock x:Uid="FirstNameLabel"
-                                   VerticalAlignment="Center" 
-                                   FontWeight="Bold"
-                                   Margin="0 3 10 3"
-                                   Width="140"/>
-                        <TextBlock x:Uid="LastNameLabel"  
-                                   VerticalAlignment="Center" 
-                                   FontWeight="Bold"
-                                   Margin="0 3 10 3"
-                                   Width="140"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.HeaderTemplate>
-        </ListView>
+        <StackPanel Orientation="Horizontal" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Stretch"
+                    Grid.Column="2" Grid.Row="0" 
+                    Grid.RowSpan="10">
+            <Image Source="/Assets/keeper_img.jpg"
+                   Stretch="Uniform"/>
+        </StackPanel>
 
     </Grid>
 </Page>

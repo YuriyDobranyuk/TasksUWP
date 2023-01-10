@@ -8,15 +8,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.TopAppBar>
-        <CommandBar x:Name="commandBar" HorizontalAlignment="Left" OverflowButtonVisibility="Collapsed">
-            <AppBarButton x:Uid="LangLabelEn" Command="{Binding ChangeLangCommand}"
-                CommandParameter="en-US"/>
-            <AppBarButton x:Uid="LangLabelUa" Command="{Binding ChangeLangCommand}"
-                CommandParameter="uk-UA"/>
-        </CommandBar>
-    </Page.TopAppBar>
-    
     <!--ContentControl Content="AuthorizationPage"/-->
 
     <!--Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">

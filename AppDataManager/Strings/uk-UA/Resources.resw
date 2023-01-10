@@ -129,6 +129,15 @@
   <data name="ButtonAuthorize.Content" xml:space="preserve">
     <value>Авторизуватися</value>
   </data>
+  <data name="ButtonRegistration.Content" xml:space="preserve">
+    <value>Зареєструватися</value>
+  </data>
+  <data name="ConfirmPassword.PlaceholderText" xml:space="preserve">
+    <value>Введіть пароль</value>
+  </data>
+  <data name="ConfirmPasswordLabel.Text" xml:space="preserve">
+    <value>Підтвердіть пароль</value>
+  </data>
   <data name="Email.PlaceholderText" xml:space="preserve">
     <value>Введіть ел. адресу</value>
   </data>
@@ -144,6 +153,9 @@
   <data name="NameUserList.Text" xml:space="preserve">
     <value>Користувачі:</value>
   </data>
+  <data name="PageAuthorizeLink.Content" xml:space="preserve">
+    <value>Авторизуватися</value>
+  </data>
   <data name="PageRegistrationLink.Content" xml:space="preserve">
     <value>Зареєструватися</value>
   </data>
@@ -152,6 +164,9 @@
   </data>
   <data name="PasswordLabel.Text" xml:space="preserve">
     <value>Основний пароль</value>
+  </data>
+  <data name="RegistrationForm.Text" xml:space="preserve">
+    <value>Реєстрація</value>
   </data>
   <data name="ThemeLabel" xml:space="preserve">
     <value>Тема</value>
